@@ -126,7 +126,7 @@ exports.changePassword = asyncHandler(async (req, res) => {
     }
 
     if (!isStrongPassword(newPassword)) {
-        throw new AppError("Password must be at least 8 characters and include uppercase, lowercase, and number", 400);
+        throw new AppError("Password must be at least 12 characters and include uppercase, lowercase, and number", 400);
     };
 
     user.password = await bcrypt.hash(newPassword, 10);

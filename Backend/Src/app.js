@@ -11,26 +11,24 @@ const app = express();
 app.use(express.json());
 
 app.use(
-    cors({
-        origin: (origin, callback) => {
-            // Allow non-browser clients (curl/Postman) with no Origin header
-            if (!origin) return callback(null, true);
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true); // Postman/curl
 
-            const configured = process.env.CLIENT_ORIGIN;
-            const allowedOrigins = (configured
-                ? configured.split(",")
-                : ["http://localhost:5173", "http://localhost:5174","https://mini-user-management-system-git-main-salmans-projects-c8054218.vercel.app",
-  "https://mini-user-management-system-67kjq95fh-salmans-projects-c8054218.vercel.app"]
-            ).map((value) => value.trim());
+      // Allow local dev
+      if (origin.startsWith("http://localhost")) {
+        return callback(null, true);
+      }
 
-            if (allowedOrigins.includes(origin)) {
-                return callback(null, true);
-            }
+      // Allow all Vercel deployments
+      if (origin.endsWith(".vercel.app")) {
+        return callback(null, true);
+      }
 
-            return callback(new Error("Not allowed by CORS"));
-        },
-        credentials: true,
-    })
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
 );
 
 // Route setup for authentication

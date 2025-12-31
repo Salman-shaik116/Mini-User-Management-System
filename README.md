@@ -108,6 +108,10 @@ NOTE :- All the values for the Env varibles are just Examples not real values re
 
 ### Frontend Deployment (Vercel)
 
+Deployed frontend URL:
+
+https://mini-user-management-system-delta.vercel.app/
+
 1. Push frontend code to GitHub
 2. Go to **Vercel Dashboard**
 3. Import GitHub repository
@@ -121,6 +125,10 @@ NOTE :- All the values for the Env varibles are just Examples not real values re
 ---
 
 ### Backend Deployment (Railway)
+
+Deployed backend URL:
+
+https://mini-user-management-system-production.up.railway.app
 
 1. Push backend code to GitHub
 2. Create a new Railway service (root directory: `Backend/`)

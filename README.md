@@ -112,9 +112,9 @@ CLIENT_ORIGIN=http://localhost:5173
 3. Import GitHub repository
 4. Set environment variable:
 
-   ```
+ ```
   VITE_API_URL=<backend-url>/api
-   ```
+ ```
 5. Deploy 🚀
 
 ---

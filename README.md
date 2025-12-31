@@ -98,6 +98,7 @@ JWT_SECRET=change-me-to-a-long-random-secret
 JWT_EXPIRES_IN=7d
 CLIENT_ORIGIN=http://localhost:5173
 ```
+NOTE :- All the values for the Env varibles are just Examples not real values replace with your own values
 
 ⚠️ **Do not commit `.env` files to GitHub**
 

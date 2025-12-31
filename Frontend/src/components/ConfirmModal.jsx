@@ -1,14 +1,28 @@
-
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "@mui/material";
 
 const ConfirmModal = ({ message, onConfirm, onCancel }) => {
     return (
-        <div className="modal-overlay">
-            <div className="modal">
-                <p>{message}</p>
-                <button className="danger" onClick={onConfirm}>Confirm</button>
-                <button className="secondary" onClick={onCancel}>Cancel</button>
-            </div>
-        </div>
+        <Dialog open onClose={onCancel} maxWidth="xs" fullWidth>
+            <DialogTitle>Confirm</DialogTitle>
+            <DialogContent>
+                <DialogContentText>{message}</DialogContentText>
+            </DialogContent>
+            <DialogActions sx={{ px: 3, pb: 2 }}>
+                <Button onClick={onCancel} color="inherit">
+                    Cancel
+                </Button>
+                <Button onClick={onConfirm} variant="contained" color="error">
+                    Confirm
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

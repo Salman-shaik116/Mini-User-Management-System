@@ -3,6 +3,19 @@ import api from "../api/axios";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 
+import {
+    Alert,
+    Box,
+    Button,
+    Container,
+    Divider,
+    Paper,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+
 // User Profile Page 
 
 const Profile = () => {
@@ -102,83 +115,124 @@ const Profile = () => {
     };
 
     if (loadingProfile) {
-        return <Spinner />;
+        return (
+            <Box sx={{ py: 6 }}>
+                <Spinner />
+            </Box>
+        );
     }
 
     if (!user) {
-        return <p>Failed to load profile.</p>;
+        return (
+            <Container maxWidth="sm" sx={{ py: 4 }}>
+                <Alert severity="error">Failed to load profile.</Alert>
+            </Container>
+        );
     }
 
     return (
-        <div className="profile-container">
-            <h2>User Profile</h2>
+        <Container maxWidth="sm" sx={{ py: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Profile
+            </Typography>
 
-            {message && <p style={{ color: "green" }}>{message}</p>}
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            <Stack spacing={2} sx={{ mb: 2 }}>
+                {message && <Alert severity="success">{message}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
+            </Stack>
 
-            {/* Profile Info */}
-            <h4>Profile Information</h4>
+            <Paper sx={{ p: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                    Profile information
+                </Typography>
 
-            <input
-                type="text"
-                value={editData.name}
-                onChange={(e) =>
-                    setEditData({ ...editData, name: e.target.value })
-                }
-                placeholder="Full Name"
-            />
+                <Stack spacing={2} sx={{ mt: 2 }}>
+                    <TextField
+                        label="Full name"
+                        value={editData.name}
+                        onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                        autoComplete="name"
+                        fullWidth
+                    />
+                    <TextField
+                        label="Email"
+                        type="email"
+                        value={editData.email}
+                        onChange={(e) => setEditData({ ...editData, email: e.target.value })}
+                        autoComplete="email"
+                        fullWidth
+                    />
 
-            <input
-                type="email"
-                value={editData.email}
-                onChange={(e) =>
-                    setEditData({ ...editData, email: e.target.value })
-                }
-                placeholder="Email"
-            />
+                    <Stack direction={{ xs: "column", sm: "row" }} spacing={1}>
+                        <Button
+                            variant="contained"
+                            onClick={handleProfileUpdate}
+                            disabled={savingProfile}
+                            startIcon={
+                                savingProfile ? (
+                                    <CircularProgress size={16} color="inherit" />
+                                ) : null
+                            }
+                        >
+                            Save changes
+                        </Button>
+                        <Button variant="outlined" onClick={handleCancel} disabled={savingProfile}>
+                            Cancel
+                        </Button>
+                    </Stack>
+                </Stack>
+            </Paper>
 
-            <div style={{ marginTop: "10px" }}>
-                <button onClick={handleProfileUpdate}>Save</button>
-                <button onClick={handleCancel} style={{ marginLeft: "10px" }}>
-                    Cancel
-                </button>
-            </div>
-            {savingProfile && <Spinner />}
+            <Divider sx={{ my: 3 }} />
 
-            <hr />
+            <Paper sx={{ p: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                    Change password
+                </Typography>
 
-            {/* Change Password */}
-            <h4>Change Password</h4>
+                <Stack spacing={2} sx={{ mt: 2 }}>
+                    <TextField
+                        label="Current password"
+                        type="password"
+                        value={passwordData.currentPassword}
+                        onChange={(e) =>
+                            setPasswordData({
+                                ...passwordData,
+                                currentPassword: e.target.value,
+                            })
+                        }
+                        autoComplete="current-password"
+                        fullWidth
+                    />
+                    <TextField
+                        label="New password"
+                        type="password"
+                        value={passwordData.newPassword}
+                        onChange={(e) =>
+                            setPasswordData({
+                                ...passwordData,
+                                newPassword: e.target.value,
+                            })
+                        }
+                        autoComplete="new-password"
+                        fullWidth
+                    />
 
-            <input
-                type="password"
-                placeholder="Current Password"
-                value={passwordData.currentPassword}
-                onChange={(e) =>
-                    setPasswordData({
-                        ...passwordData,
-                        currentPassword: e.target.value,
-                    })
-                }
-            />
-
-            <input
-                type="password"
-                placeholder="New Password"
-                value={passwordData.newPassword}
-                onChange={(e) =>
-                    setPasswordData({
-                        ...passwordData,
-                        newPassword: e.target.value,
-                    })
-                }
-            />
-
-            <button onClick={handlePasswordChange} disabled={changingPassword}>
-                {changingPassword ? "Updating..." : "Update Password"}
-            </button>
-            {changingPassword && <Spinner />}
-        </div>
+                    <Button
+                        variant="contained"
+                        onClick={handlePasswordChange}
+                        disabled={changingPassword}
+                        startIcon={
+                            changingPassword ? (
+                                <CircularProgress size={16} color="inherit" />
+                            ) : null
+                        }
+                    >
+                        {changingPassword ? "Updating..." : "Update password"}
+                    </Button>
+                </Stack>
+            </Paper>
+        </Container>
     );
 };
 

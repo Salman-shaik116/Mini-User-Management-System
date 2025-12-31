@@ -2,6 +2,8 @@ import { useContext, useEffect, useRef } from "react";
 import { Navigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { toast } from "react-toastify";
+import { Box, Typography } from "@mui/material";
+import Spinner from "../components/Spinner";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
     const { user, loading } = useContext(AuthContext);
@@ -25,7 +27,14 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 
     // Still checking auth
     if (loading) {
-        return <p>Loading...</p>;
+        return (
+            <Box sx={{ py: 6 }}>
+                <Spinner />
+                <Typography variant="body2" color="text.secondary" align="center">
+                    Checking session...
+                </Typography>
+            </Box>
+        );
     }
 
     // Not logged in

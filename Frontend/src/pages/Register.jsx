@@ -1,9 +1,19 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import isStrongPassword from "../utils/passwordValidator";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+
+import {
+    Box,
+    Button,
+    Container,
+    Link,
+    Paper,
+    TextField,
+    Typography,
+} from "@mui/material";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -38,7 +48,7 @@ const Register = () => {
         }
 
         // Email validation
-        if (!email.includes("@")) {
+        if (email && !email.includes("@")) {
             nextErrors.email = "Invalid email format";
         }
 
@@ -76,63 +86,99 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-page">
-            <div className="auth-card">
-                <div className="login-container">
-                    <h2>Sign Up</h2>
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "center",
+                py: 6,
+                bgcolor: "grey.50",
+            }}
+        >
+            <Container maxWidth="xs">
+                <Paper elevation={3} sx={{ p: 4 }}>
+                    <Typography variant="h5" align="center" gutterBottom>
+                        Create account
+                    </Typography>
 
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            type="text"
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                        <TextField
+                            label="Full name"
                             name="name"
-                            placeholder="Full Name"
                             value={name}
                             onChange={handleChange}
+                            autoComplete="name"
+                            fullWidth
+                            margin="normal"
+                            error={Boolean(formErrors.name)}
+                            helperText={formErrors.name}
                         />
-                        {formErrors.name && <p className="error">{formErrors.name}</p>}
 
-                        <input
+                        <TextField
+                            label="Email"
                             type="email"
                             name="email"
-                            placeholder="Email"
                             value={email}
                             onChange={handleChange}
+                            autoComplete="email"
+                            fullWidth
+                            margin="normal"
+                            error={Boolean(formErrors.email)}
+                            helperText={formErrors.email}
                         />
-                        {formErrors.email && <p className="error">{formErrors.email}</p>}
 
-                        <input
+                        <TextField
+                            label="Password"
                             type="password"
                             name="password"
-                            placeholder="Password"
                             value={password}
                             onChange={handleChange}
+                            autoComplete="new-password"
+                            fullWidth
+                            margin="normal"
+                            error={Boolean(formErrors.password)}
+                            helperText={formErrors.password}
                         />
-                        {formErrors.password && <p className="error">{formErrors.password}</p>}
 
-                        <input
+                        <TextField
+                            label="Confirm password"
                             type="password"
                             name="confirmPassword"
-                            placeholder="Confirm Password"
                             value={confirmPassword}
                             onChange={handleChange}
+                            autoComplete="new-password"
+                            fullWidth
+                            margin="normal"
+                            error={Boolean(formErrors.confirmPassword)}
+                            helperText={formErrors.confirmPassword}
                         />
-                        {formErrors.confirmPassword && (
-                            <p className="error">{formErrors.confirmPassword}</p>
-                        )}
 
-                        <button type="submit" disabled={submitting}>
-                            {submitting ? "Registering..." : "Register"}
-                        </button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                            disabled={submitting}
+                            sx={{ mt: 2 }}
+                        >
+                            {submitting ? "Creating account..." : "Create account"}
+                        </Button>
+
                         {submitting && <Spinner />}
-                    </form>
 
-                    <p>
-                        Already have an account?{" "}
-                        <Link to="/login">Login</Link>
-                    </p>
-                </div>
-            </div>
-        </div>
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            sx={{ mt: 2, color: "text.secondary" }}
+                        >
+                            Already have an account?{" "}
+                            <Link component={RouterLink} to="/login" underline="hover">
+                                Sign in
+                            </Link>
+                        </Typography>
+                    </Box>
+                </Paper>
+            </Container>
+        </Box>
     );
 };
 

@@ -1,7 +1,17 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { toast } from "react-toastify";
+
+import {
+    AppBar,
+    Box,
+    Button,
+    Chip,
+    Stack,
+    Toolbar,
+    Typography,
+} from "@mui/material";
 
 const Navbar = () => {
     const { user, logout } = useContext(AuthContext);
@@ -16,37 +26,43 @@ const Navbar = () => {
     };
 
     return (
-        <nav style={styles.nav} className="navbar">
-            <div className="nav-right">
-                <strong>{user.name}</strong> ({user.role})
-            </div>
+        <AppBar position="sticky" color="default" elevation={1}>
+            <Toolbar sx={{ gap: 2 }}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexGrow: 1 }}>
+                    <Typography variant="h6" component="div">
+                        Mini UMS
+                    </Typography>
+                    <Chip
+                        size="small"
+                        variant="outlined"
+                        label={`${user.name} (${user.role})`}
+                    />
+                </Box>
 
-            <div style={styles.links}>
-                <Link to="/dashboard">Dashboard</Link>
-                <Link to="/profile">Profile</Link>
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <Button component={RouterLink} to="/dashboard" color="inherit">
+                        Dashboard
+                    </Button>
+                    <Button component={RouterLink} to="/profile" color="inherit">
+                        Profile
+                    </Button>
 
-                {user.role === "admin" && (
-                    <Link to="/admin/users">Manage Users</Link>
-                )}
+                    {user.role === "admin" && (
+                        <Button component={RouterLink} to="/admin/users" color="inherit">
+                            Manage Users
+                        </Button>
+                    )}
 
-                <button onClick={handleLogout}>Logout</button>
-            </div>
-        </nav>
+                    <Button
+                        variant="contained"
+                        color="error"
+                        onClick={handleLogout}
+                    >
+                        Logout
+                    </Button>
+                </Stack>
+            </Toolbar>
+        </AppBar>
     );
 };
-
-const styles = {
-    nav: {
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "10px 20px",
-        background: "#f4f4f4",
-    },
-    links: {
-        display: "flex",
-        gap: "15px",
-        alignItems: "center",
-    },
-};
-
 export default Navbar;

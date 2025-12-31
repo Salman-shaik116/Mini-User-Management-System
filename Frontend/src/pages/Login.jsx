@@ -1,8 +1,18 @@
 import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../auth/AuthContext";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
+
+import {
+    Box,
+    Button,
+    Container,
+    Link,
+    Paper,
+    TextField,
+    Typography,
+} from "@mui/material";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -25,7 +35,7 @@ const Login = () => {
             if (!password) nextErrors.password = "Password is required";
         }
 
-        if (!email.includes("@")) {
+        if (email && !email.includes("@")) {
             nextErrors.email = "Invalid email format";
         }
 
@@ -46,41 +56,72 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            <h2>Login</h2>
+        <Box
+            sx={{
+                minHeight: "100vh",
+                display: "flex",
+                alignItems: "center",
+                py: 6,
+                bgcolor: "grey.50",
+            }}
+        >
+            <Container maxWidth="xs">
+                <Paper elevation={3} sx={{ p: 4 }}>
+                    <Typography variant="h5" align="center" gutterBottom>
+                        Sign in
+                    </Typography>
 
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                {formErrors.email && (
-                    <p className="error">{formErrors.email}</p>
-                )}
+                    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+                        <TextField
+                            label="Email"
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            autoComplete="email"
+                            fullWidth
+                            margin="normal"
+                            error={Boolean(formErrors.email)}
+                            helperText={formErrors.email}
+                        />
 
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                {formErrors.password && (
-                    <p className="error">{formErrors.password}</p>
-                )}
+                        <TextField
+                            label="Password"
+                            type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            autoComplete="current-password"
+                            fullWidth
+                            margin="normal"
+                            error={Boolean(formErrors.password)}
+                            helperText={formErrors.password}
+                        />
 
-                <button type="submit" disabled={submitting}>
-                    {submitting ? "Logging in..." : "Login"}
-                </button>
-                {submitting && <Spinner />}
-            </form>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            fullWidth
+                            disabled={submitting}
+                            sx={{ mt: 2 }}
+                        >
+                            {submitting ? "Signing in..." : "Sign in"}
+                        </Button>
 
-            <p>
-                Don’t have an account?{" "}
-                <Link to="/register">Sign up</Link>
-            </p>
-        </div>
+                        {submitting && <Spinner />}
+
+                        <Typography
+                            variant="body2"
+                            align="center"
+                            sx={{ mt: 2, color: "text.secondary" }}
+                        >
+                            Don’t have an account?{" "}
+                            <Link component={RouterLink} to="/register" underline="hover">
+                                Sign up
+                            </Link>
+                        </Typography>
+                    </Box>
+                </Paper>
+            </Container>
+        </Box>
     );
 };
 

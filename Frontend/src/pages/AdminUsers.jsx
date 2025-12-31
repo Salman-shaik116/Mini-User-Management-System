@@ -4,6 +4,21 @@ import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 import ConfirmModal from "../components/ConfirmModal";
 
+import {
+    Box,
+    Button,
+    Container,
+    Paper,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from "@mui/material";
+
 const AdminUsers = () => {
     const [users, setUsers] = useState([]);
     const [page, setPage] = useState(1);
@@ -69,8 +84,10 @@ const AdminUsers = () => {
     };
 
     return (
-        <div style={{ padding: "20px" }}>
-            <h2>Admin Dashboard - Users</h2>
+        <Container maxWidth="lg" sx={{ py: 4 }}>
+            <Typography variant="h4" gutterBottom>
+                Admin Users
+            </Typography>
 
             {confirmState.open && (
                 <ConfirmModal
@@ -82,67 +99,78 @@ const AdminUsers = () => {
 
             {loading && <Spinner />}
 
-            <table border="1" width="100%" cellPadding="8">
-                <thead>
-                    <tr>
-                        <th>Email</th>
-                        <th>Full Name</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
+            <TableContainer component={Paper} sx={{ mt: 2 }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Email</TableCell>
+                            <TableCell>Full name</TableCell>
+                            <TableCell>Role</TableCell>
+                            <TableCell>Status</TableCell>
+                            <TableCell align="right">Actions</TableCell>
+                        </TableRow>
+                    </TableHead>
 
-                <tbody>
-                    {users.map((user) => (
-                        <tr key={user._id}>
-                            <td>{user.email}</td>
-                            <td>{user.name}</td>
-                            <td>{user.role}</td>
-                            <td>{user.isActive ? "Active" : "Inactive"}</td>
-                            <td>
-                                {user.isActive ? (
-                                    <button
-                                        className="danger"
-                                        onClick={() => openConfirm(user._id, "deactivate")}
-                                    >
-                                        Deactivate
-                                    </button>
-                                ) : (
-                                    <button
-                                        className="primary"
-                                        onClick={() => openConfirm(user._id, "activate")}
-                                    >
-                                        Activate
-                                    </button>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                    <TableBody>
+                        {users.map((row) => (
+                            <TableRow key={row._id} hover>
+                                <TableCell>{row.email}</TableCell>
+                                <TableCell>{row.name}</TableCell>
+                                <TableCell sx={{ textTransform: "capitalize" }}>{row.role}</TableCell>
+                                <TableCell>{row.isActive ? "Active" : "Inactive"}</TableCell>
+                                <TableCell align="right">
+                                    {row.isActive ? (
+                                        <Button
+                                            color="error"
+                                            variant="contained"
+                                            onClick={() => openConfirm(row._id, "deactivate")}
+                                        >
+                                            Deactivate
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            color="success"
+                                            variant="contained"
+                                            onClick={() => openConfirm(row._id, "activate")}
+                                        >
+                                            Activate
+                                        </Button>
+                                    )}
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
 
-            {/* Pagination */}
-            <div style={{ marginTop: "15px" }}>
-                <button
+                {!loading && users.length === 0 && (
+                    <Box sx={{ p: 3 }}>
+                        <Typography color="text.secondary">No users found.</Typography>
+                    </Box>
+                )}
+            </TableContainer>
+
+            <Stack direction="row" spacing={2} alignItems="center" sx={{ mt: 2 }}>
+                <Button
+                    variant="outlined"
                     disabled={page === 1}
                     onClick={() => fetchUsers(page - 1)}
                 >
                     Prev
-                </button>
+                </Button>
 
-                <span style={{ margin: "0 10px" }}>
+                <Typography color="text.secondary">
                     Page {page} of {totalPages}
-                </span>
+                </Typography>
 
-                <button
+                <Button
+                    variant="outlined"
                     disabled={page === totalPages}
                     onClick={() => fetchUsers(page + 1)}
                 >
                     Next
-                </button>
-            </div>
-        </div>
+                </Button>
+            </Stack>
+        </Container>
     );
 };
 

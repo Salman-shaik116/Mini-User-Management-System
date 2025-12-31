@@ -86,17 +86,17 @@ http://localhost:5000
 ### Frontend (`Frontend/.env`)
 
 ```env
-VITE_API_URL=
+VITE_API_URL=http://localhost:5000/api
 ```
 
-### Backend (`.env`)
+### Backend (`Backend/.env`)
 
 ```env
-PORT=
-MONGO_URI=
-JWT_SECRET=
-JWT_EXPIRES_IN=
-CLIENT_ORIGIN=
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/mini_user_management
+JWT_SECRET=change-me-to-a-long-random-secret
+JWT_EXPIRES_IN=7d
+CLIENT_ORIGIN=http://localhost:5173
 ```
 
 ⚠️ **Do not commit `.env` files to GitHub**

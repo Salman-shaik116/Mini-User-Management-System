@@ -19,7 +19,7 @@ app.use(
             const configured = process.env.CLIENT_ORIGIN;
             const allowedOrigins = (configured
                 ? configured.split(",")
-                : ["http://localhost:5173", "http://localhost:5174"]
+                : ["http://localhost:5173", "http://localhost:5174","https://mini-user-management-system-git-main-salmans-projects-c8054218.vercel.app"]
             ).map((value) => value.trim());
 
             if (allowedOrigins.includes(origin)) {

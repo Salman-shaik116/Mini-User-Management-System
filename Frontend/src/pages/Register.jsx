@@ -68,7 +68,7 @@ const Register = () => {
 
         try {
             setSubmitting(true);
-            await api.post("/auth/signup", {
+            await api.post("/api/auth/signup", {
                 name,
                 email,
                 password
